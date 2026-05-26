@@ -11,6 +11,12 @@ import java.util.List;
 @Service
 public class PriceCalculationService {
 
+    private static final double KREAM_WEIGHT = 0.7;
+    private static final double EBAY_WEIGHT = 0.3;
+    private static final double PRICE_RANGE_RATE = 0.05;
+    private static final double DEFAULT_CONDITION_RATE = 0.80;
+    private static final String UNKNOWN_CONDITION_GRADE = "UNKNOWN";
+
     private final MarketPriceDataLoader marketPriceDataLoader;
 
     public PriceCalculationService(MarketPriceDataLoader marketPriceDataLoader) {
@@ -34,7 +40,7 @@ public class PriceCalculationService {
                     0,
                     0,
                     "시세 정보 없음",
-                    "입력한 브랜드, 모델명, 컬러웨이, 사이즈와 일치하는 KREAM/eBay 시세 데이터를 찾지 못했습니다.",
+                    "입력한 브랜드, 모델명, 컬러웨이, 사이즈와 일치하는 KREAM/eBay 시세 데이터를 찾지 못했습니다. 추천 가격 산정을 위해서는 유사 거래 데이터가 추가로 필요합니다.",
                     List.of(),
                     List.of()
             );
@@ -42,7 +48,8 @@ public class PriceCalculationService {
 
         int baseMarketPrice = calculateBaseMarketPrice(kreamAveragePrice, ebayAveragePrice);
 
-        double conditionRate = getConditionRate(request.conditionGrade());
+        String normalizedConditionGrade = normalizeConditionGrade(request.conditionGrade());
+        double conditionRate = getConditionRate(normalizedConditionGrade);
         double boxRate = getBoxRate(request.boxIncluded());
 
         int calculatedPrice = (int) Math.round(baseMarketPrice * conditionRate * boxRate);
@@ -56,8 +63,12 @@ public class PriceCalculationService {
                 kreamAveragePrice,
                 ebayAveragePrice,
                 baseMarketPrice,
-                request.conditionGrade(),
-                request.boxIncluded()
+                recommendedPrice,
+                normalizedConditionGrade,
+                conditionRate,
+                request.boxIncluded(),
+                boxRate,
+                priceRange
         );
 
         return new CalculatePriceResponse(
@@ -93,7 +104,7 @@ public class PriceCalculationService {
 
     private int calculateBaseMarketPrice(int kreamAveragePrice, int ebayAveragePrice) {
         if (kreamAveragePrice > 0 && ebayAveragePrice > 0) {
-            return (int) Math.round(kreamAveragePrice * 0.7 + ebayAveragePrice * 0.3);
+            return (int) Math.round(kreamAveragePrice * KREAM_WEIGHT + ebayAveragePrice * EBAY_WEIGHT);
         }
 
         if (kreamAveragePrice > 0) {
@@ -103,16 +114,22 @@ public class PriceCalculationService {
         return ebayAveragePrice;
     }
 
-    private double getConditionRate(String conditionGrade) {
-        String grade = conditionGrade.trim().toUpperCase();
+    private String normalizeConditionGrade(String conditionGrade) {
+        if (conditionGrade == null || conditionGrade.isBlank()) {
+            return UNKNOWN_CONDITION_GRADE;
+        }
 
-        return switch (grade) {
+        return conditionGrade.trim().toUpperCase();
+    }
+
+    private double getConditionRate(String normalizedConditionGrade) {
+        return switch (normalizedConditionGrade) {
             case "DS" -> 1.00;
             case "S" -> 0.97;
             case "A" -> 0.92;
             case "B" -> 0.82;
             case "C" -> 0.70;
-            default -> 0.80;
+            default -> DEFAULT_CONDITION_RATE;
         };
     }
 
@@ -129,8 +146,8 @@ public class PriceCalculationService {
     }
 
     private String makePriceRange(int recommendedPrice) {
-        int min = roundToNearestThousand((int) (recommendedPrice * 0.95));
-        int max = roundToNearestThousand((int) (recommendedPrice * 1.05));
+        int min = roundToNearestThousand((int) Math.round(recommendedPrice * (1 - PRICE_RANGE_RATE)));
+        int max = roundToNearestThousand((int) Math.round(recommendedPrice * (1 + PRICE_RANGE_RATE)));
 
         return String.format("%,d원 ~ %,d원", min, max);
     }
@@ -141,28 +158,168 @@ public class PriceCalculationService {
             int kreamAveragePrice,
             int ebayAveragePrice,
             int baseMarketPrice,
-            String conditionGrade,
-            Boolean boxIncluded
+            int recommendedPrice,
+            String normalizedConditionGrade,
+            double conditionRate,
+            Boolean boxIncluded,
+            double boxRate,
+            String priceRange
     ) {
-        String boxText;
+        String marketPriceText = makeMarketPriceText(
+                kreamCount,
+                ebayCount,
+                kreamAveragePrice,
+                ebayAveragePrice,
+                baseMarketPrice
+        );
 
-        if (boxIncluded == null) {
-            boxText = "박스 포함 여부 알 수 없음";
-        } else if (boxIncluded) {
-            boxText = "박스 포함";
-        } else {
-            boxText = "박스 미포함";
+        String conditionText = makeConditionText(normalizedConditionGrade, conditionRate);
+        String boxText = makeBoxText(boxIncluded, boxRate);
+        String comparisonText = makeComparisonText(kreamAveragePrice, ebayAveragePrice, recommendedPrice);
+
+        return String.format(
+                "%s %s %s 이를 바탕으로 최종 추천가는 %,d원으로 산정했으며, 판매 권장 범위는 %s입니다. %s",
+                marketPriceText,
+                conditionText,
+                boxText,
+                recommendedPrice,
+                priceRange,
+                comparisonText
+        );
+    }
+
+    private String makeMarketPriceText(
+            int kreamCount,
+            int ebayCount,
+            int kreamAveragePrice,
+            int ebayAveragePrice,
+            int baseMarketPrice
+    ) {
+        if (kreamAveragePrice > 0 && ebayAveragePrice > 0) {
+            return String.format(
+                    "KREAM 유사 거래 %d건의 평균가 %,d원과 eBay 유사 거래 %d건의 평균가 %,d원을 각각 %.0f%%, %.0f%% 비율로 반영해 기준 시세 %,d원을 계산했습니다.",
+                    kreamCount,
+                    kreamAveragePrice,
+                    ebayCount,
+                    ebayAveragePrice,
+                    KREAM_WEIGHT * 100,
+                    EBAY_WEIGHT * 100,
+                    baseMarketPrice
+            );
+        }
+
+        if (kreamAveragePrice > 0) {
+            return String.format(
+                    "KREAM 유사 거래 %d건의 평균가 %,d원을 기준 시세로 사용했습니다.",
+                    kreamCount,
+                    kreamAveragePrice
+            );
         }
 
         return String.format(
-                "KREAM 유사 거래 %d건의 평균가 %,d원과 eBay 유사 거래 %d건의 평균가 %,d원을 바탕으로 기준 시세 %,d원을 계산했습니다. 이후 상품 상태 %s, %s 조건을 반영해 추천 가격을 산정했습니다.",
-                kreamCount,
-                kreamAveragePrice,
+                "KREAM 유사 거래는 찾지 못했지만, eBay 유사 거래 %d건의 평균가 %,d원을 기준 시세로 사용했습니다.",
                 ebayCount,
-                ebayAveragePrice,
-                baseMarketPrice,
-                conditionGrade,
-                boxText
+                ebayAveragePrice
+        );
+    }
+
+    private String makeConditionText(String normalizedConditionGrade, double conditionRate) {
+        String description = getConditionDescription(normalizedConditionGrade);
+
+        if (UNKNOWN_CONDITION_GRADE.equals(normalizedConditionGrade)) {
+            return String.format(
+                    "상품 상태 등급이 명확하지 않아 기본 반영률 %.0f%%를 적용했습니다.",
+                    conditionRate * 100
+            );
+        }
+
+        if ("기타 상태".equals(description)) {
+            return String.format(
+                    "상품 상태 등급 %s는 사전에 정의되지 않은 값이므로 기본 반영률 %.0f%%를 적용했습니다.",
+                    normalizedConditionGrade,
+                    conditionRate * 100
+            );
+        }
+
+        return String.format(
+                "상품 상태는 %s(%s)로 판단하여 %.0f%% 반영률을 적용했습니다.",
+                normalizedConditionGrade,
+                description,
+                conditionRate * 100
+        );
+    }
+
+    private String getConditionDescription(String conditionGrade) {
+        return switch (conditionGrade) {
+            case "DS" -> "새상품";
+            case "S" -> "거의 새상품";
+            case "A" -> "양호한 중고";
+            case "B" -> "사용감 있음";
+            case "C" -> "하자 있음";
+            default -> "기타 상태";
+        };
+    }
+
+    private String makeBoxText(Boolean boxIncluded, double boxRate) {
+        if (boxIncluded == null) {
+            return String.format(
+                    "구성품 여부는 확인되지 않아 %.0f%% 반영률을 적용했습니다.",
+                    boxRate * 100
+            );
+        }
+
+        if (boxIncluded) {
+            return String.format(
+                    "박스가 포함되어 있어 %.0f%% 반영률을 적용했습니다.",
+                    boxRate * 100
+            );
+        }
+
+        return String.format(
+                "박스가 포함되지 않아 %.0f%% 반영률을 적용했습니다.",
+                boxRate * 100
+        );
+    }
+
+    private String makeComparisonText(int kreamAveragePrice, int ebayAveragePrice, int recommendedPrice) {
+        if (kreamAveragePrice > 0) {
+            return makePriceComparisonText("KREAM 평균가", kreamAveragePrice, recommendedPrice);
+        }
+
+        if (ebayAveragePrice > 0) {
+            return makePriceComparisonText("eBay 평균가", ebayAveragePrice, recommendedPrice);
+        }
+
+        return "";
+    }
+
+    private String makePriceComparisonText(String sourceName, int averagePrice, int recommendedPrice) {
+        if (averagePrice == 0) {
+            return "";
+        }
+
+        double differenceRate = ((double) recommendedPrice - averagePrice) / averagePrice * 100;
+        int roundedDifferenceRate = (int) Math.round(Math.abs(differenceRate));
+
+        if (roundedDifferenceRate == 0) {
+            return String.format(
+                    "추천가는 %s와 거의 동일한 수준입니다.",
+                    sourceName
+            );
+        }
+
+        if (differenceRate > 0) {
+            return String.format(
+                    "추천가는 %s 대비 약 %d%% 높은 수준입니다.",
+                    sourceName,
+                    roundedDifferenceRate
+            );
+        }
+
+        return String.format(
+                "추천가는 %s 대비 약 %d%% 낮은 수준입니다.",
+                sourceName,
+                roundedDifferenceRate
         );
     }
 

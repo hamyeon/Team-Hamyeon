@@ -1,3 +1,4 @@
+### 가격 계산 - A등급 + 박스 포함
 POST http://localhost:8080/api/products/calculate-price
 Content-Type: application/json
 
@@ -6,6 +7,45 @@ Content-Type: application/json
   "model": "Dunk Low",
   "colorway": "Panda",
   "sizeKr": 275,
+  "conditionGrade": "A",
+  "boxIncluded": true
+}
+
+### 가격 계산 - A등급 + 박스 미포함
+POST http://localhost:8080/api/products/calculate-price
+Content-Type: application/json
+
+{
+  "brand": "Nike",
+  "model": "Dunk Low",
+  "colorway": "Panda",
+  "sizeKr": 275,
+  "conditionGrade": "A",
+  "boxIncluded": false
+}
+
+### 가격 계산 - C등급 + 박스 포함
+POST http://localhost:8080/api/products/calculate-price
+Content-Type: application/json
+
+{
+  "brand": "Nike",
+  "model": "Dunk Low",
+  "colorway": "Panda",
+  "sizeKr": 275,
+  "conditionGrade": "C",
+  "boxIncluded": true
+}
+
+### 가격 계산 - 시세 없음 케이스
+POST http://localhost:8080/api/products/calculate-price
+Content-Type: application/json
+
+{
+  "brand": "Unknown",
+  "model": "Unknown Model",
+  "colorway": "Unknown Color",
+  "sizeKr": 999,
   "conditionGrade": "A",
   "boxIncluded": true
 }
