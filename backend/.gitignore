@@ -1,3 +1,4 @@
 .gradle/
 build/
+backend/build/
 HELP.md
