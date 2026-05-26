@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 public record ProductResponse(
         Long id,
+        String imageUrl,
         String brand,
         String model,
         String colorway,
@@ -14,12 +15,15 @@ public record ProductResponse(
         Integer recommendedPrice,
         Integer baseMarketPrice,
         String priceRange,
+        Integer finalPrice,
+        String reason,
         String description,
         LocalDateTime createdAt
 ) {
     public static ProductResponse from(Product product) {
         return new ProductResponse(
                 product.getId(),
+                product.getImageUrl(),
                 product.getBrand(),
                 product.getModel(),
                 product.getColorway(),
@@ -29,6 +33,8 @@ public record ProductResponse(
                 product.getRecommendedPrice(),
                 product.getBaseMarketPrice(),
                 product.getPriceRange(),
+                product.getFinalPrice(),
+                product.getReason(),
                 product.getDescription(),
                 product.getCreatedAt()
         );

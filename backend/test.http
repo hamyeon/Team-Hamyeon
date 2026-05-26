@@ -15,14 +15,17 @@ POST http://localhost:8080/api/products
 Content-Type: application/json
 
 {
-  "brand": "Nike",
-  "model": "Dunk Low",
-  "colorway": "Panda",
-  "sizeKr": 275,
+  "imageUrl": "https://vintic-mvp-bucket-123.s3.ap-northeast-2.amazonaws.com/sample.jpg",
+  "brand": "Jordan",
+  "model": "1 Retro High",
+  "colorway": "Lost and Found",
+  "sizeKr": 280,
   "conditionGrade": "A",
   "boxIncluded": true,
-  "recommendedPrice": 96000,
-  "baseMarketPrice": 104000,
-  "priceRange": "91,000원 ~ 101,000원",
+  "recommendedPrice": 304000,
+  "baseMarketPrice": 330500,
+  "priceRange": "289,000원 ~ 319,000원",
+  "finalPrice": 300000,
+  "reason": "KREAM 유사 거래 평균가와 eBay 유사 거래 평균가를 바탕으로 기준 시세를 계산했습니다.",
   "description": "AI 분석 및 시세 계산 후 최종 등록된 상품입니다."
 }
