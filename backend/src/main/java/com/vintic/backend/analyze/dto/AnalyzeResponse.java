@@ -7,5 +7,5 @@ public record AnalyzeResponse(
         String color,
         Integer size,
         String conditionDescription,
-        String conditinoGrade
+        String conditionGrade
 ) {}
