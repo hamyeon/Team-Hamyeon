@@ -19,6 +19,7 @@ public class ProductRegistrationService {
     @Transactional
     public ProductResponse createProduct(CreateProductRequest request) {
         Product product = new Product(
+                request.imageUrl(),
                 request.brand(),
                 request.model(),
                 request.colorway(),
@@ -28,6 +29,8 @@ public class ProductRegistrationService {
                 request.recommendedPrice(),
                 request.baseMarketPrice(),
                 request.priceRange(),
+                request.finalPrice(),
+                request.reason(),
                 request.description()
         );
 

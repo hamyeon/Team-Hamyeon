@@ -11,6 +11,8 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String imageUrl;
+
     private String brand;
     private String model;
     private String colorway;
@@ -21,6 +23,10 @@ public class Product {
     private Integer recommendedPrice;
     private Integer baseMarketPrice;
     private String priceRange;
+    private Integer finalPrice;
+
+    @Column(length = 1000)
+    private String reason;
 
     @Column(length = 1000)
     private String description;
@@ -31,6 +37,7 @@ public class Product {
     }
 
     public Product(
+            String imageUrl,
             String brand,
             String model,
             String colorway,
@@ -40,8 +47,11 @@ public class Product {
             Integer recommendedPrice,
             Integer baseMarketPrice,
             String priceRange,
+            Integer finalPrice,
+            String reason,
             String description
     ) {
+        this.imageUrl = imageUrl;
         this.brand = brand;
         this.model = model;
         this.colorway = colorway;
@@ -51,12 +61,18 @@ public class Product {
         this.recommendedPrice = recommendedPrice;
         this.baseMarketPrice = baseMarketPrice;
         this.priceRange = priceRange;
+        this.finalPrice = finalPrice;
+        this.reason = reason;
         this.description = description;
         this.createdAt = LocalDateTime.now();
     }
 
     public Long getId() {
         return id;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 
     public String getBrand() {
@@ -93,6 +109,14 @@ public class Product {
 
     public String getPriceRange() {
         return priceRange;
+    }
+
+    public Integer getFinalPrice() {
+        return finalPrice;
+    }
+
+    public String getReason() {
+        return reason;
     }
 
     public String getDescription() {

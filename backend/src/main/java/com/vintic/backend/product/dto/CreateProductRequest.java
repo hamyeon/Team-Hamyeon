@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotNull;
 
 public record CreateProductRequest(
 
+        @NotBlank(message = "이미지 URL은 필수입니다.")
+        String imageUrl,
+
         @NotBlank(message = "브랜드는 필수입니다.")
         String brand,
 
@@ -29,6 +32,11 @@ public record CreateProductRequest(
         Integer baseMarketPrice,
 
         String priceRange,
+
+        @NotNull(message = "최종 판매 가격은 필수입니다.")
+        Integer finalPrice,
+
+        String reason,
 
         String description
 ) {
