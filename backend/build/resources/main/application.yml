@@ -1,0 +1,16 @@
+spring:
+  profiles:
+    include: secret # 비밀 파일(secret.yml)을 같이 읽어옴
+
+cloud:
+  aws:
+    s3:
+      bucket: vintic-mvp-bucket-123
+    region:
+      static: ap-northeast-2
+
+logging:
+  level:
+    root: INFO
+    com.vintic.backend: INFO
+
