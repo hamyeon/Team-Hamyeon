@@ -13,7 +13,7 @@ import java.util.Map;
 
 //S3UploaderService에 프론트가 보낸 이미지를 전달하는 컨트롤러
 @RestController
-@RequestMapping("/api/v1/products")
+@RequestMapping("/api/products")
 @RequiredArgsConstructor
 public class AnalyzeController {
 
