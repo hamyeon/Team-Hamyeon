@@ -1,14 +1,10 @@
 import { style } from '@vanilla-extract/css';
 import { vars } from '@/shared/styles/theme.css';
 
-export const page = style({
+export const app = style({
+  width: '100%',
+  maxWidth: '768px',
   minHeight: '100dvh',
-  display: 'flex',
-  flexDirection: 'column',
+  margin: '0 auto',
   background: vars.color.white,
-});
-
-export const content = style({
-  flex: 1,
-  padding: vars.spacing[20],
 });
