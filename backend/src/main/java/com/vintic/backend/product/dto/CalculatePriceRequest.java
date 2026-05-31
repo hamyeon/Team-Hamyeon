@@ -20,7 +20,7 @@ public record CalculatePriceRequest(
         @NotBlank(message = "상품 상태 등급은 필수입니다.")
         String conditionGrade,
 
-        @NotNull(message = "박스 포함 여부는 필수입니다.")
-        Boolean boxIncluded
+        @NotBlank(message = "구성품 상태는 필수입니다.")
+        String componentStatus
 ) {
 }
