@@ -15,6 +15,7 @@ export const content = style({
   alignItems: 'center',
   paddingRight: vars.spacing[20],
   paddingLeft: vars.spacing[20],
+  textAlign: 'center',
 });
 
 export const loadingBox = style({
