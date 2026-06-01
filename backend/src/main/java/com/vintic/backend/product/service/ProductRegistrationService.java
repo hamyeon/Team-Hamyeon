@@ -2,10 +2,13 @@ package com.vintic.backend.product.service;
 
 import com.vintic.backend.product.domain.Product;
 import com.vintic.backend.product.dto.CreateProductRequest;
+import com.vintic.backend.product.dto.ProductListResponse;
 import com.vintic.backend.product.dto.ProductResponse;
 import com.vintic.backend.product.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class ProductRegistrationService {
@@ -21,20 +24,28 @@ public class ProductRegistrationService {
         Product product = new Product(
                 request.imageUrls(),
                 request.brand(),
-                request.model(),
-                request.colorway(),
-                request.sizeKr(),
+                request.modelName(),
+                request.color(),
+                request.size(),
                 request.conditionGrade(),
                 request.componentStatus(),
                 request.recommendedPrice(),
                 request.baseMarketPrice(),
                 request.priceRange(),
-                request.finalPrice(),
+                request.sellingPrice(),
                 request.reason(),
-                request.description()
+                request.sellerDescription()
         );
 
         Product savedProduct = productRepository.save(product);
         return ProductResponse.from(savedProduct);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ProductListResponse> getProducts() {
+        return productRepository.findAllByOrderByCreatedAtDesc()
+                .stream()
+                .map(ProductListResponse::from)
+                .toList();
     }
 }
