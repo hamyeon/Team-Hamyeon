@@ -94,8 +94,8 @@ export const priceUnit = style({
   marginLeft: vars.spacing[4],
   color: vars.color.black,
 
-  fontSize: vars.typography.fontSize.body03,
-  fontWeight: vars.typography.fontWeight.semibold,
+  fontSize: vars.typography.fontSize.body01,
+  fontWeight: vars.typography.fontWeight.medium,
   lineHeight: vars.typography.lineHeight[160],
   letterSpacing: vars.typography.letterSpacing.default,
 });

@@ -60,6 +60,7 @@ export const vars = createGlobalTheme(':root', {
       body05: '0.875rem', // 14px
       body06: '0.875rem', // 14px
       caption01: '0.75rem', // 12px
+      caption02: '0.75rem', // 12px
       label01: '0.625rem', // 10px
     },
 

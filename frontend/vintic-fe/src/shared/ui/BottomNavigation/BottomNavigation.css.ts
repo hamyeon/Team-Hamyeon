@@ -7,7 +7,7 @@ export const navigation = style({
   alignItems: 'center',
   width: '100%',
   height: '72px',
-  paddingTop: vars.spacing[12],
+  paddingTop: vars.spacing[8],
   paddingBottom: `calc(${vars.spacing[8]} + env(safe-area-inset-bottom))`,
   background: vars.color.white,
   borderTop: `1px solid ${vars.color.gray2}`,

@@ -82,7 +82,7 @@ export const priceValue = style({
 export const slider = style({
   width: '100%',
   height: '24px',
-  marginTop: vars.spacing[28],
+  marginTop: vars.spacing[20],
   marginBottom: 0,
   padding: 0,
   appearance: 'none',
@@ -132,11 +132,11 @@ export const slider = style({
 export const rangeLabelRow = style({
   display: 'flex',
   justifyContent: 'space-between',
-  marginTop: vars.spacing[16],
+  marginTop: vars.spacing[4],
   color: vars.color.black,
 
-  fontSize: vars.typography.fontSize.body06,
+  fontSize: vars.typography.fontSize.caption02,
   fontWeight: vars.typography.fontWeight.regular,
-  lineHeight: vars.typography.lineHeight[140],
+  lineHeight: vars.typography.lineHeight[160],
   letterSpacing: vars.typography.letterSpacing.default,
 });
