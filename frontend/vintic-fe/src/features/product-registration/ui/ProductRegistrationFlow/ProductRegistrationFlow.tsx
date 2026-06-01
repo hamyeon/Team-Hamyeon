@@ -57,7 +57,7 @@ export function ProductRegistrationFlow() {
       size: 0,
       conditionDescription: '',
       conditionGrade: 'B',
-      componentStatus: 'all',
+      componentStatus: 'FULL',
       description: '',
     },
   });
@@ -236,9 +236,9 @@ export function ProductRegistrationFlow() {
       recommendedPrice: values.recommendedPrice ?? 0,
       baseMarketPrice: values.baseMarketPrice ?? 0,
       priceRange: values.priceRange ?? '',
-      finalPrice: values.finalPrice ?? 0,
+      sellingPrice: values.finalPrice ?? 0,
       reason: values.reason ?? '',
-      description: values.description,
+      sellerDescription: values.description,
     });
 
     if (!response.success) {

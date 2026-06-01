@@ -107,12 +107,44 @@ export type RegisterProductRequest = {
   recommendedPrice: number;
   baseMarketPrice: number;
   priceRange: string;
-  finalPrice: number;
+  sellingPrice: number;
   reason: string;
-  description?: string;
+  sellerDescription?: string;
 };
 
-export type RegisterProductData = RegisterProductRequest & {
+export type RegisterProductServerRequest = {
+  imageUrls: string[];
+  brand: string;
+  modelName: string;
+  color: string;
+  size: number;
+  conditionGrade: ConditionGrade;
+  componentStatus: ComponentStatus;
+  recommendedPrice: number;
+  baseMarketPrice: number;
+  priceRange: string;
+  sellingPrice: number;
+  reason: string;
+  sellerDescription?: string;
+};
+
+export type RegisterProductData = {
   id: number;
+  imageUrls: string[];
+  brand: string;
+  modelName: string;
+  color: string;
+  size: number;
+  conditionGrade: ConditionGrade;
+  componentStatus: ComponentStatus;
+  recommendedPrice: number;
+  baseMarketPrice: number;
+  priceRange: string;
+  sellingPrice: number;
+  reason: string;
+  sellerDescription?: string;
   createdAt: string;
 };
+
+export type RegisterProductResponse =
+  ApiResponse<RegisterProductData>;
