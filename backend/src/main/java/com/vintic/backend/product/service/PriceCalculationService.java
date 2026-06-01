@@ -342,21 +342,29 @@ public class PriceCalculationService {
     }
 
     private List<CalculatePriceResponse.MatchedMarketPrice> toResponseMatches(List<MarketPriceRow> rows) {
-        return rows.stream()
-                .limit(5)
-                .map(row -> new CalculatePriceResponse.MatchedMarketPrice(
-                        row.source(),
-                        row.brand(),
-                        row.model(),
-                        row.colorway(),
-                        row.sizeKr(),
-                        row.conditionGrade(),
-                        row.boxIncluded(),
-                        row.price(),
-                        row.url()
-                ))
-                .toList();
+    return rows.stream()
+            .limit(5)
+            .map(row -> new CalculatePriceResponse.MatchedMarketPrice(
+                    row.source(),
+                    row.brand(),
+                    row.model(),
+                    row.colorway(),
+                    row.sizeKr(),
+                    row.conditionGrade(),
+                    toComponentStatus(row.boxIncluded()),
+                    row.price(),
+                    row.url()
+            ))
+            .toList();
     }
+
+private String toComponentStatus(Boolean boxIncluded) {
+    if (boxIncluded == null) {
+        return "NONE";
+    }
+
+    return boxIncluded ? "FULL" : "NONE";
+}
 
     private boolean equalsIgnoreCase(String a, String b) {
         if (a == null || b == null) {
