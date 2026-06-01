@@ -17,11 +17,11 @@ public record CalculatePriceResponse(
     public record MatchedMarketPrice(
             String source,
             String brand,
-            String model,
-            String colorway,
-            Integer sizeKr,
+            String modelName,
+            String color,
+            Integer size,
             String conditionGrade,
-            Boolean boxIncluded,
+            String componentStatus,
             int price,
             String url
     ) {
