@@ -1,66 +1,139 @@
 import type {
   AnalyzeRecommendedPriceData,
   AnalyzeRecommendedPriceRequest,
+  AnalyzeRecommendedPriceResponse,
   ApiResponse,
 } from './types';
-import { createFailureResponse, createSuccessResponse, delay } from './mockUtils';
+import { PRODUCT_API_BASE_URL, PRODUCT_API_ENDPOINTS } from './types';
 
 export async function analyzeRecommendedPrice(
   request: AnalyzeRecommendedPriceRequest,
 ): Promise<ApiResponse<AnalyzeRecommendedPriceData>> {
-  await delay(1500);
-
-  if (!request.brand) {
-    return createFailureResponse(40001, '브랜드는 필수입니다.');
-  }
-
-  if (!request.modelName) {
-    return createFailureResponse(40001, '모델명은 필수입니다.');
-  }
-
-  if (!request.color) {
-    return createFailureResponse(40001, '컬러웨이는 필수입니다.');
-  }
-
-  if (!request.size) {
-    return createFailureResponse(40001, '한국 사이즈는 필수입니다.');
-  }
-
-  return createSuccessResponse({
-    recommendedPrice: 73000,
-    baseMarketPrice: 120984,
-    kreamAveragePrice: 114000,
-    ebayAveragePrice: 137280,
-    minRecommendedPrice: 69000,
-    maxRecommendedPrice: 77000,
-    priceRange: '69,000원 ~ 77,000원',
-    reason:
-      'KREAM 유사 거래 1건의 평균가 114,000원과 eBay 유사 거래 50건의 평균가 137,280원을 각각 70%, 30% 비율로 반영해 기준 시세 120,984원을 계산했습니다. 상품 상태는 B 등급으로 판단했으며, 구성품 여부를 반영해 최종 추천가를 산정했습니다.',
-    kreamMatches: [
-      {
-        source: 'KREAM',
-        brand: request.brand,
-        modelName: request.modelName,
-        color: request.color,
-        size: request.size,
-        conditionGrade: 'DS',
-        componentStatus: null,
-        price: 114000,
-        url: 'https://kream.co.kr/products/548447',
+  if (!request.brand.trim()) {
+    return {
+      success: false,
+      data: null,
+      error: {
+        code: 40001,
+        message: '브랜드는 필수입니다.',
       },
-    ],
-    ebayMatches: [
-      {
-        source: 'EBAY',
-        brand: request.brand,
-        modelName: request.modelName,
-        color: 'Black Red',
-        size: request.size,
-        conditionGrade: 'B',
-        componentStatus: null,
-        price: 27000,
-        url: 'https://www.ebay.com/...',
+    };
+  }
+
+  if (!request.modelName.trim()) {
+    return {
+      success: false,
+      data: null,
+      error: {
+        code: 40001,
+        message: '모델명은 필수입니다.',
       },
-    ],
-  });
+    };
+  }
+
+  if (!request.color.trim()) {
+    return {
+      success: false,
+      data: null,
+      error: {
+        code: 40001,
+        message: '컬러는 필수입니다.',
+      },
+    };
+  }
+
+  if (!request.size || request.size <= 0) {
+    return {
+      success: false,
+      data: null,
+      error: {
+        code: 40001,
+        message: '신발 사이즈는 필수입니다.',
+      },
+    };
+  }
+
+  if (!request.conditionGrade) {
+    return {
+      success: false,
+      data: null,
+      error: {
+        code: 40001,
+        message: '상품 상태 등급은 필수입니다.',
+      },
+    };
+  }
+
+  if (!request.componentStatus) {
+    return {
+      success: false,
+      data: null,
+      error: {
+        code: 40001,
+        message: '구성품 상태는 필수입니다.',
+      },
+    };
+  }
+
+  try {
+    const response = await fetch(
+      `${PRODUCT_API_BASE_URL}${PRODUCT_API_ENDPOINTS.analyzeRecommendedPrice}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          brand: request.brand,
+          modelName: request.modelName,
+          color: request.color,
+          size: request.size,
+          conditionGrade: request.conditionGrade,
+          componentStatus: request.componentStatus,
+        }),
+      },
+    );
+
+    const result = (await response.json()) as AnalyzeRecommendedPriceResponse;
+
+    if (!response.ok || !result.success || !result.data) {
+      return {
+        success: false,
+        data: null,
+        error: result.error ?? {
+          code: response.status,
+          message: '추천 가격 계산에 실패했습니다.',
+        },
+      };
+    }
+
+    return {
+      success: true,
+      data: {
+        recommendedPrice: result.data.recommendedPrice,
+        baseMarketPrice: result.data.baseMarketPrice,
+        kreamAveragePrice: result.data.kreamAveragePrice,
+        ebayAveragePrice: result.data.ebayAveragePrice,
+        minRecommendedPrice: result.data.minRecommendedPrice,
+        maxRecommendedPrice: result.data.maxRecommendedPrice,
+        priceRange: result.data.priceRange,
+        reason: result.data.reason,
+        kreamMatches: result.data.kreamMatches,
+        ebayMatches: result.data.ebayMatches,
+      },
+      error: null,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      data: null,
+      error: {
+        code: 50001,
+        message:
+          error instanceof Error
+            ? `추천 가격 계산 요청에 실패했습니다: ${error.message}`
+            : '추천 가격 계산 요청에 실패했습니다.',
+      },
+    };
+  }
 }

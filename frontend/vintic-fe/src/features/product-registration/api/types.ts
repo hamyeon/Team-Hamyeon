@@ -93,6 +93,9 @@ export type AnalyzeRecommendedPriceData = {
   ebayMatches: MarketMatch[];
 };
 
+export type AnalyzeRecommendedPriceResponse =
+  ApiResponse<AnalyzeRecommendedPriceData>;
+
 export type RegisterProductRequest = {
   imageUrls: ProductImageUrls;
   brand: string;
