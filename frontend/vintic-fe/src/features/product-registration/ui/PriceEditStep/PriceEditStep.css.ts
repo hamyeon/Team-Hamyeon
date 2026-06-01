@@ -51,7 +51,7 @@ export const infoIcon = style({
 });
 
 export const description = style({
-  marginTop: vars.spacing[8],
+  marginTop: vars.spacing[4],
   marginBottom: 0,
   color: vars.color.black,
 
