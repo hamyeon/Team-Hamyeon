@@ -14,7 +14,7 @@ export type ProductImageUrls = {
   defectImageUrl?: string;
 };
 
-export type ComponentStatus = 'all' | 'partial' | 'none';
+export type ComponentStatus = 'FULL' | 'PARTIAL' | 'NONE';
 
 export type ConditionGrade = 'S' | 'A' | 'B' | 'C' | 'D';
 

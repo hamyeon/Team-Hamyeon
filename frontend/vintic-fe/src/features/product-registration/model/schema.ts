@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const componentStatusSchema = z.enum(['all', 'partial', 'none']);
+export const componentStatusSchema = z.enum(['FULL', 'PARTIAL', 'NONE']);
 
 export const conditionGradeSchema = z.enum(['S', 'A', 'B', 'C', 'D']);
 

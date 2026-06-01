@@ -26,7 +26,9 @@ export function ImageUploadStep({
   onImageChange,
   onNext,
 }: ImageUploadStepProps) {
-  const canGoNext = Boolean(images.frontImage && images.backImage);
+  const canGoNext = Boolean(
+  images.frontImage && images.backImage && images.sideImage,
+);
 
   return (
     <div className={styles.step}>

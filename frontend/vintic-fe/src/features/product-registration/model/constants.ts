@@ -32,9 +32,9 @@ export const PRODUCT_IMAGE_SLOTS = [
 }[];
 
 export const COMPONENT_STATUS_OPTIONS = [
-  { label: '전체 있음', value: 'all' },
-  { label: '일부 있음', value: 'partial' },
-  { label: '구성품 없음', value: 'none' },
+  { label: '전체 있음', value: 'FULL' },
+  { label: '일부 있음', value: 'PARTIAL' },
+  { label: '구성품 없음', value: 'NONE' },
 ] satisfies {
   label: string;
   value: ComponentStatus;
