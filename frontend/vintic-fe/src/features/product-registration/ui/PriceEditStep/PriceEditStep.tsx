@@ -17,31 +17,14 @@ function formatPrice(price?: number) {
   return price.toLocaleString();
 }
 
-function parsePriceRange(priceRange?: string) {
-  if (!priceRange || priceRange === '시세 정보 없음') {
-    return {
-      minPrice: 0,
-      maxPrice: 0,
-    };
-  }
-
-  const [minText, maxText] = priceRange.split('~').map((value) => value.trim());
-
-  const minPrice = Number(minText.replace(/[^0-9]/g, ''));
-  const maxPrice = Number(maxText.replace(/[^0-9]/g, ''));
-
-  return {
-    minPrice: Number.isNaN(minPrice) ? 0 : minPrice,
-    maxPrice: Number.isNaN(maxPrice) ? 0 : maxPrice,
-  };
-}
-
 export function PriceEditStep({ form, onComplete }: PriceEditStepProps) {
   const finalPrice = form.watch('finalPrice');
   const recommendedPrice = form.watch('recommendedPrice');
-  const priceRange = form.watch('priceRange');
+  const minRecommendedPrice = form.watch('minRecommendedPrice');
+  const maxRecommendedPrice = form.watch('maxRecommendedPrice');
 
-  const { minPrice, maxPrice } = parsePriceRange(priceRange);
+  const minPrice = minRecommendedPrice ?? 0;
+  const maxPrice = maxRecommendedPrice ?? 0;
   const currentPrice = finalPrice ?? recommendedPrice ?? minPrice;
 
   const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,7 +61,7 @@ export function PriceEditStep({ form, onComplete }: PriceEditStepProps) {
 
         <div className={styles.priceEditor}>
           <p className={styles.priceText}>
-            판매가: <strong>{formatPrice(currentPrice)}</strong>원
+            판매가: <strong className={styles.priceValue}>{formatPrice(currentPrice)}</strong>원
           </p>
 
           <input

@@ -12,26 +12,10 @@ type PriceResultStepProps = {
 
 function formatPrice(price?: number) {
   if (!price) {
-    return '-';
+    return '0';
   }
 
   return price.toLocaleString();
-}
-
-function getPriceRangeLines(priceRange?: string) {
-  if (!priceRange || priceRange === '시세 정보 없음') {
-    return {
-      fastSaleText: '시세 정보를 찾지 못했어요.',
-      highSaleText: '직접 판매 가격을 설정해주세요.',
-    };
-  }
-
-  const [minPrice, maxPrice] = priceRange.split('~').map((value) => value.trim());
-
-  return {
-    fastSaleText: `${minPrice}에 빠르게 판매할 수 있어요.`,
-    highSaleText: `${maxPrice}에 판매하는 것도 고려해볼 수 있어요.`,
-  };
 }
 
 export function PriceResultStep({
@@ -40,9 +24,8 @@ export function PriceResultStep({
   onUseRecommendedPrice,
 }: PriceResultStepProps) {
   const recommendedPrice = form.watch('recommendedPrice');
-  const priceRange = form.watch('priceRange');
-
-  const { fastSaleText, highSaleText } = getPriceRangeLines(priceRange);
+  const minRecommendedPrice = form.watch('minRecommendedPrice');
+  const maxRecommendedPrice = form.watch('maxRecommendedPrice');
 
   return (
     <div className={styles.step}>
@@ -76,8 +59,19 @@ export function PriceResultStep({
           </div>
 
           <div className={styles.rangeTextGroup}>
-            <p className={styles.rangeText}>{fastSaleText}</p>
-            <p className={styles.rangeText}>{highSaleText}</p>
+            <p className={styles.rangeText}>
+              <strong className={styles.rangePrice}>
+                {formatPrice(minRecommendedPrice)}원
+              </strong>
+              에 빠르게 판매할 수 있어요.
+            </p>
+
+            <p className={styles.rangeText}>
+              <strong className={styles.rangePrice}>
+                {formatPrice(maxRecommendedPrice)}원
+              </strong>
+              에 판매하는 것도 고려해볼 수 있어요.
+            </p>
           </div>
         </div>
 

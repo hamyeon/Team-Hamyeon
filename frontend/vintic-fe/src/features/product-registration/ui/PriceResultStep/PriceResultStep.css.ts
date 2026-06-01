@@ -109,9 +109,13 @@ export const rangeText = style({
   color: vars.color.black,
 
   fontSize: vars.typography.fontSize.body03,
-  fontWeight: vars.typography.fontWeight.semibold,
+  fontWeight: vars.typography.fontWeight.regular,
   lineHeight: vars.typography.lineHeight[160],
   letterSpacing: vars.typography.letterSpacing.default,
+});
+
+export const rangePrice = style({
+  fontWeight: vars.typography.fontWeight.semibold,
 });
 
 export const reasonButton = style({

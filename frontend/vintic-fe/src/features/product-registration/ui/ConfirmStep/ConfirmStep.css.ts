@@ -77,23 +77,24 @@ export const infoList = style({
 
 export const infoItem = style({
   marginBottom: vars.spacing[16],
+});
 
-  selectors: {
-    '& dt': {
-      marginBottom: vars.spacing[4],
-      color: vars.color.black,
-      fontSize: vars.typography.fontSize.head03,
-      fontWeight: vars.typography.fontWeight.semibold,
-      lineHeight: vars.typography.lineHeight[160],
-      letterSpacing: vars.typography.letterSpacing.default,
-    },
-    '& dd': {
-      margin: 0,
-      color: vars.color.black,
-      fontSize: vars.typography.fontSize.body05,
-      fontWeight: vars.typography.fontWeight.regular,
-      lineHeight: vars.typography.lineHeight[160],
-      letterSpacing: vars.typography.letterSpacing.default,
-    },
-  },
+export const infoTerm = style({
+  marginBottom: vars.spacing[4],
+  color: vars.color.gray5,
+
+  fontSize: vars.typography.fontSize.body05,
+  fontWeight: vars.typography.fontWeight.regular,
+  lineHeight: vars.typography.lineHeight[160],
+  letterSpacing: vars.typography.letterSpacing.default,
+});
+
+export const infoDescription = style({
+  margin: 0,
+  color: vars.color.black,
+
+  fontSize: vars.typography.fontSize.body03,
+  fontWeight: vars.typography.fontWeight.semibold,
+  lineHeight: vars.typography.lineHeight[160],
+  letterSpacing: vars.typography.letterSpacing.default,
 });

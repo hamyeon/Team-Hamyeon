@@ -73,13 +73,11 @@ export const priceText = style({
   fontWeight: vars.typography.fontWeight.regular,
   lineHeight: vars.typography.lineHeight[160],
   letterSpacing: vars.typography.letterSpacing.default,
-
-  selectors: {
-    '& strong': {
-      fontWeight: vars.typography.fontWeight.semibold,
-    },
-  },
 });
+
+export const priceValue = style({
+  fontWeight: vars.typography.fontWeight.semibold,
+})
 
 export const slider = style({
   width: '100%',

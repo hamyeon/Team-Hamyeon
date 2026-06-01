@@ -57,43 +57,43 @@ export function ConfirmStep({ form, onSubmit }: ConfirmStepProps) {
 
           <dl className={styles.infoList}>
             <div className={styles.infoItem}>
-              <dt>브랜드</dt>
-              <dd>{values.brand}</dd>
+              <dt className={styles.infoTerm}>브랜드</dt>
+              <dd className={styles.infoDescription}>{values.brand}</dd>
             </div>
 
             <div className={styles.infoItem}>
-              <dt>모델명</dt>
-              <dd>{values.modelName}</dd>
+              <dt className={styles.infoTerm}>모델명</dt>
+              <dd className={styles.infoDescription}>{values.modelName}</dd>
             </div>
 
             <div className={styles.infoItem}>
-              <dt>컬러</dt>
-              <dd>{values.color}</dd>
+              <dt className={styles.infoTerm}>컬러</dt>
+              <dd className={styles.infoDescription}>{values.color}</dd>
             </div>
 
             <div className={styles.infoItem}>
-              <dt>사이즈</dt>
-              <dd>{values.size}</dd>
+              <dt className={styles.infoTerm}>사이즈</dt>
+              <dd className={styles.infoDescription}>{values.size}</dd>
             </div>
 
             <div className={styles.infoItem}>
-              <dt>판매가</dt>
-              <dd>{formatPrice(values.finalPrice)}</dd>
+              <dt className={styles.infoTerm}>판매가</dt>
+              <dd className={styles.infoDescription}>{formatPrice(values.finalPrice)}</dd>
             </div>
 
             <div className={styles.infoItem}>
-              <dt>상태 설명</dt>
-              <dd>{values.conditionDescription}</dd>
+              <dt className={styles.infoTerm}>상태 설명</dt>
+              <dd className={styles.infoDescription}>{values.conditionDescription}</dd>
             </div>
 
             <div className={styles.infoItem}>
-              <dt>구성품 여부</dt>
-              <dd>{values.componentStatus}</dd>
+              <dt className={styles.infoTerm}>구성품 여부</dt>
+              <dd className={styles.infoDescription}>{values.componentStatus}</dd>
             </div>
 
             <div className={styles.infoItem}>
-              <dt>판매자 설명</dt>
-              <dd>{values.description || '-'}</dd>
+              <dt className={styles.infoTerm}>판매자 설명</dt>
+              <dd className={styles.infoDescription}>{values.description || '-'}</dd>
             </div>
           </dl>
         </div>
