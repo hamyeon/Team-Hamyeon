@@ -73,6 +73,13 @@ export const body06 = style({
 
 export const caption01 = style({
   fontSize: vars.typography.fontSize.caption01,
+  fontWeight: vars.typography.fontWeight.medium,
+  lineHeight: vars.typography.lineHeight[160],
+  letterSpacing: vars.typography.letterSpacing.default,
+});
+
+export const caption02 = style({
+  fontSize: vars.typography.fontSize.caption02,
   fontWeight: vars.typography.fontWeight.regular,
   lineHeight: vars.typography.lineHeight[160],
   letterSpacing: vars.typography.letterSpacing.default,
