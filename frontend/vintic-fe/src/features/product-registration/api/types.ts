@@ -46,6 +46,19 @@ export type AnalyzeProductImagesData = {
   conditionGrade: ConditionGrade;
 };
 
+export type AnalyzeProductImagesServerData = {
+  imageUrls: string[];
+  brand: string;
+  modelName: string;
+  color: string;
+  size: number;
+  conditionDescription: string;
+  conditionGrade: ConditionGrade;
+};
+
+export type AnalyzeProductImagesServerResponse =
+  ApiResponse<AnalyzeProductImagesServerData>;
+
 export type AnalyzeRecommendedPriceRequest = {
   brand: string;
   modelName: string;

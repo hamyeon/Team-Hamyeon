@@ -1,41 +1,88 @@
 import type {
   AnalyzeProductImagesData,
   AnalyzeProductImagesRequest,
+  AnalyzeProductImagesServerResponse,
   ApiResponse,
 } from './types';
-import { createFailureResponse, createSuccessResponse, delay } from './mockUtils';
+import { PRODUCT_API_BASE_URL, PRODUCT_API_ENDPOINTS } from './types';
 
 export async function analyzeProductImages(
   request: AnalyzeProductImagesRequest,
 ): Promise<ApiResponse<AnalyzeProductImagesData>> {
-  await delay(1500);
-
   const { frontImage, backImage, sideImage, defectImage } = request.images;
 
-  if (!frontImage || !backImage) {
-    return createFailureResponse(
-      40002,
-      '앞면과 뒷면, 측면 이미지는 필수입니다.',
-    );
+  if (!frontImage || !backImage || !sideImage) {
+    return {
+      success: false,
+      data: null,
+      error: {
+        code: 40002,
+        message: '앞면, 뒷면, 측면 이미지는 필수입니다.',
+      },
+    };
   }
 
-  return createSuccessResponse({
-    imageUrls: {
-      frontImageUrl:
-        'https://vintic-mvp-bucket-123.s3.ap-northeast-2.amazonaws.com/mock-front-shoe.jpg',
-      backImageUrl:
-        'https://vintic-mvp-bucket-123.s3.ap-northeast-2.amazonaws.com/mock-back-shoe.jpg',
-      sideImageUrl:
-        'https://vintic-mvp-bucket-123.s3.ap-northeast-2.amazonaws.com/mock-side-shoe.jpg',
-      defectImageUrl: defectImage
-        ? 'https://vintic-mvp-bucket-123.s3.ap-northeast-2.amazonaws.com/mock-defect-shoe.jpg'
-        : undefined,
-    },
-    brand: 'Nike',
-    modelName: 'Jordan 1 Retro High',
-    color: 'Black/Red',
-    size: 270,
-    conditionDescription: '오른쪽 발등 부분에 미세한 스크래치 있음',
-    conditionGrade: 'B',
-  });
+  const formData = new FormData();
+
+  formData.append('images', frontImage);
+  formData.append('images', backImage);
+  formData.append('images', sideImage);
+
+  if (defectImage) {
+    formData.append('images', defectImage);
+  }
+
+  try {
+    const response = await fetch(
+      `${PRODUCT_API_BASE_URL}${PRODUCT_API_ENDPOINTS.analyzeProductImages}`,
+      {
+        method: 'POST',
+        body: formData,
+      },
+    );
+
+    const result = (await response.json()) as AnalyzeProductImagesServerResponse;
+
+    if (!response.ok || !result.success || !result.data) {
+      return {
+        success: false,
+        data: null,
+        error: result.error ?? {
+          code: response.status,
+          message: '이미지 분석에 실패했습니다.',
+        },
+      };
+    }
+
+    const [frontImageUrl, backImageUrl, sideImageUrl, defectImageUrl] =
+      result.data.imageUrls;
+
+    return {
+      success: true,
+      data: {
+        imageUrls: {
+          frontImageUrl,
+          backImageUrl,
+          sideImageUrl,
+          defectImageUrl,
+        },
+        brand: result.data.brand,
+        modelName: result.data.modelName,
+        color: result.data.color,
+        size: result.data.size,
+        conditionDescription: result.data.conditionDescription,
+        conditionGrade: result.data.conditionGrade,
+      },
+      error: null,
+    };
+  } catch {
+    return {
+      success: false,
+      data: null,
+      error: {
+        code: 50003,
+        message: '이미지 분석에 실패했습니다.',
+      },
+    };
+  }
 }

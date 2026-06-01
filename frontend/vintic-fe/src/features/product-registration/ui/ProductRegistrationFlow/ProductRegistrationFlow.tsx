@@ -84,17 +84,55 @@ export function ProductRegistrationFlow() {
       return;
     }
 
-    form.setValue('frontImageUrl', response.data.imageUrls.frontImageUrl);
-    form.setValue('backImageUrl', response.data.imageUrls.backImageUrl);
-    form.setValue('sideImageUrl', response.data.imageUrls.sideImageUrl);
-    form.setValue('defectImageUrl', response.data.imageUrls.defectImageUrl);
+    form.setValue('frontImageUrl', response.data.imageUrls.frontImageUrl, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
 
-    form.setValue('brand', response.data.brand);
-    form.setValue('modelName', response.data.modelName);
-    form.setValue('color', response.data.color);
-    form.setValue('size', response.data.size);
-    form.setValue('conditionDescription', response.data.conditionDescription);
-    form.setValue('conditionGrade', response.data.conditionGrade);
+    form.setValue('backImageUrl', response.data.imageUrls.backImageUrl, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+
+    form.setValue('sideImageUrl', response.data.imageUrls.sideImageUrl, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+
+    form.setValue('defectImageUrl', response.data.imageUrls.defectImageUrl, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+
+    form.setValue('brand', response.data.brand, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+
+    form.setValue('modelName', response.data.modelName, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+
+    form.setValue('color', response.data.color, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+
+    form.setValue('size', response.data.size, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+
+    form.setValue('conditionDescription', response.data.conditionDescription, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+
+    form.setValue('conditionGrade', response.data.conditionGrade, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
 
     setStep(PRODUCT_REGISTRATION_STEPS.PRODUCT_ANALYSIS_RESULT);
   };
