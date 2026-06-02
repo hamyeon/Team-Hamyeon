@@ -1,0 +1,30 @@
+import { style } from '@vanilla-extract/css';
+import { vars } from '@/shared/styles/theme.css';
+
+export const step = style({
+  minHeight: '100dvh',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  background: vars.color.white,
+});
+
+export const content = style({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  paddingRight: vars.spacing[20],
+  paddingLeft: vars.spacing[20],
+  textAlign: 'center',
+});
+
+export const description = style({
+  marginTop: vars.spacing[24],
+  marginBottom: 0,
+  color: vars.color.black,
+
+  fontSize: vars.typography.fontSize.body01,
+  fontWeight: vars.typography.fontWeight.medium,
+  lineHeight: vars.typography.lineHeight[160],
+  letterSpacing: vars.typography.letterSpacing.default,
+});
