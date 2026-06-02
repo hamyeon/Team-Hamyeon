@@ -19,13 +19,6 @@ export const content = style({
   textAlign: 'center',
 });
 
-export const imagePlaceholder = style({
-  width: '96px',
-  height: '96px',
-  marginBottom: vars.spacing[24],
-  background: vars.color.gray1,
-});
-
 export const title = style({
   margin: 0,
   color: vars.color.black,

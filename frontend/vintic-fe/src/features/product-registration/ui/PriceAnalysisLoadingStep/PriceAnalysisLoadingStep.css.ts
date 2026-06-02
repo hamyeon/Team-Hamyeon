@@ -18,12 +18,6 @@ export const content = style({
   textAlign: 'center',
 });
 
-export const loadingBox = style({
-  width: '96px',
-  height: '96px',
-  background: vars.color.gray1,
-});
-
 export const description = style({
   marginTop: vars.spacing[24],
   marginBottom: 0,

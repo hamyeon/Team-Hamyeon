@@ -28,6 +28,7 @@ export const vars = createGlobalTheme(':root', {
     28: '28px',
     32: '32px',
     36: '36px',
+    44: '44px',
   },
 
   radius: {

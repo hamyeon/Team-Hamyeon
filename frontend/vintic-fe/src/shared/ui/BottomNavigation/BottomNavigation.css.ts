@@ -2,13 +2,17 @@ import { style } from '@vanilla-extract/css';
 import { vars } from '@/shared/styles/theme.css';
 
 export const navigation = style({
+  position: 'sticky',
+  bottom: 0,
+  zIndex: 30,
+
   display: 'grid',
   gridTemplateColumns: 'repeat(3, 1fr)',
   alignItems: 'center',
   width: '100%',
-  height: '72px',
-  paddingTop: vars.spacing[8],
-  paddingBottom: `calc(${vars.spacing[8]} + env(safe-area-inset-bottom))`,
+  height: '64px',
+  paddingTop: vars.spacing[4],
+  paddingBottom: `calc(${vars.spacing[4]} + env(safe-area-inset-bottom))`,
   background: vars.color.white,
   borderTop: `1px solid ${vars.color.gray2}`,
 });
