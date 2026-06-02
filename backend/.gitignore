@@ -6,4 +6,5 @@ HELP.md
 .idea/
 *.pem
 .env
-
+# S3 비밀 키 파일 깃허브 업로드 차단
+*/application-secret.yml
