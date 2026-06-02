@@ -1,10 +1,11 @@
+import { LoadingLottie } from '../LoadingLottie';
 import * as styles from './PriceAnalysisLoadingStep.css';
 
 export function PriceAnalysisLoadingStep() {
   return (
     <div className={styles.step}>
       <div className={styles.content}>
-        <div className={styles.loadingBox} />
+        <LoadingLottie />
 
         <p className={styles.description}>
             AI가 기준가를 분석하고 있어요

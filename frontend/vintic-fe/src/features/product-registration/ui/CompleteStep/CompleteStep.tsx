@@ -1,4 +1,5 @@
 import { BottomButtonBar } from '@/shared/ui/BottomButtonBar';
+import { CompleteLottie } from '../CompleteLottie';
 import * as styles from './CompleteStep.css';
 
 type CompleteStepProps = {
@@ -9,7 +10,7 @@ export function CompleteStep({ onComplete }: CompleteStepProps) {
   return (
     <div className={styles.step}>
       <section className={styles.content}>
-        <div className={styles.imagePlaceholder} />
+        <CompleteLottie />
 
         <h1 className={styles.title}>상품이 성공적으로 등록되었어요!</h1>
         <p className={styles.description}>
