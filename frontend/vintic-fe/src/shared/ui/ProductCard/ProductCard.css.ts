@@ -45,12 +45,8 @@ export const likeButton = style({
   border: 'none',
   background: 'transparent',
   cursor: 'pointer',
-
-  selectors: {
-    '&:active': {
-      opacity: 0.8,
-    },
-  },
+  WebkitTapHighlightColor: 'transparent',
+  appearance: 'none',
 });
 
 export const likeIcon = style({

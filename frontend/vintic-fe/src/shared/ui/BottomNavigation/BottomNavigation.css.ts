@@ -10,9 +10,9 @@ export const navigation = style({
   gridTemplateColumns: 'repeat(3, 1fr)',
   alignItems: 'center',
   width: '100%',
-  height: '72px',
-  paddingTop: vars.spacing[8],
-  paddingBottom: `calc(${vars.spacing[8]} + env(safe-area-inset-bottom))`,
+  height: '64px',
+  paddingTop: vars.spacing[4],
+  paddingBottom: `calc(${vars.spacing[4]} + env(safe-area-inset-bottom))`,
   background: vars.color.white,
   borderTop: `1px solid ${vars.color.gray2}`,
 });

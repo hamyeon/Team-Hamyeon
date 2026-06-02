@@ -15,7 +15,13 @@ export function HomeHeader({
 }: HomeHeaderProps) {
   return (
     <header className={styles.header}>
-      <h1 className={styles.title}>홈</h1>
+      <h1 className={styles.title}>
+        <img 
+          src="/images/img_logo.png"
+          alt="VINTIC"
+          className={styles.logo}
+        />
+      </h1>
 
       <div className={styles.actions}>
         <button

@@ -18,14 +18,17 @@ export const header = style({
 });
 
 export const title = style({
+  display: 'flex',
+  alignItems: 'center',
   margin: 0,
-  color: vars.color.black,
-
-  fontSize: vars.typography.fontSize.head02,
-  fontWeight: vars.typography.fontWeight.semibold,
-  lineHeight: vars.typography.lineHeight[140],
-  letterSpacing: vars.typography.letterSpacing.default,
 });
+
+export const logo = style({
+  display: 'block',
+  width: '86px',
+  height: '20px',
+});
+
 
 export const actions = style({
   display: 'flex',
