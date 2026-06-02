@@ -2,6 +2,10 @@ import { style } from '@vanilla-extract/css';
 import { vars } from '@/shared/styles/theme.css';
 
 export const header = style({
+  position: 'sticky',
+  top: 0,
+  zIndex: 20,
+  
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',

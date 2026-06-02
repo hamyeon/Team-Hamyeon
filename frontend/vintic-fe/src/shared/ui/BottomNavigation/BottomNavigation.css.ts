@@ -2,6 +2,10 @@ import { style } from '@vanilla-extract/css';
 import { vars } from '@/shared/styles/theme.css';
 
 export const navigation = style({
+  position: 'sticky',
+  bottom: 0,
+  zIndex: 30,
+
   display: 'grid',
   gridTemplateColumns: 'repeat(3, 1fr)',
   alignItems: 'center',
