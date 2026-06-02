@@ -5,7 +5,7 @@ import type {
   ProductImageUrls,
 } from '../model/types';
 
-export const PRODUCT_API_BASE_URL = 'http://44.193.0.36:8080';
+export const PRODUCT_API_BASE_URL = '/backend';
 
 export const PRODUCT_API_ENDPOINTS = {
   analyzeProductImages: '/api/products/analyze',
