@@ -13,6 +13,12 @@ spring:
       ddl-auto: update # 자바 코드로 테이블을 정의하면 DB에 알아서 테이블을 만들어주는 옵션
     show-sql: true
 
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB      # 파일 한 개당 최대 용량 제한 (기본값: 1MB)
+      max-request-size: 100MB   # 한 번의 요청(여러 파일 합계)당 최대 용량 제한 (기본값: 10MB)
+
 cloud:
   aws:
     credentials:
