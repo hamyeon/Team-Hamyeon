@@ -167,9 +167,7 @@ AI 분석 결과를 그대로 최종값으로 확정하지 않고, 사용자 확
 | ORM | Spring Data JPA, Hibernate | 상품, 가격 계산 결과, 시세 데이터 저장 및 조회 |
 | Database | MySQL / AWS RDS | 상품 정보, 추천 가격, 최종 판매가, 시세 데이터 저장 |
 | Storage | AWS S3 | 사용자가 업로드한 상품 이미지 저장 및 이미지 URL 관리 |
-| AI Integration | OpenAI Vision API | 상품 이미지 기반 브랜드, 모델명, 색상, 사이즈, 상태 정보 분석 |
 | HTTP Client | RestTemplate / WebClient | OpenAI API 및 외부 시세 조회 API 연동 |
-| Crawling / Data Source | KREAM, eBay | 중고 신발 시세 데이터 수집 및 평균 거래가 계산 |
 | Build | Gradle | Spring Boot 프로젝트 빌드 및 의존성 관리 |
 | Test | Postman | 백엔드 API 단위 테스트 및 통합 테스트 |
 | Error Handling | RestControllerAdvice | S3 업로드 실패, AI 분석 실패, 시세 데이터 부족 등 공통 예외 처리 |
@@ -182,12 +180,32 @@ AI 분석 결과를 그대로 최종값으로 확정하지 않고, 사용자 확
 | Cache | Redis | 경매 입찰 동시성 제어, 예산 잠금, 임시 상태 저장 |
 | Message Queue | Kafka | 입찰 이벤트, 알림 발송, 실시간 갱신 비동기 처리 |
 | Realtime | WebSocket | 경매 최고가 및 입찰 상태 실시간 브로드캐스팅 |
-| Agent Logic | AI Agent | 판매자 가격 조정, 경매 전환, 구매자 상품 비교 및 입찰 판단 보조 |
 | State Management | State Machine | 자동 입찰 Agent의 ACTIVE / PAUSED / OUTBID 상태 제어 |
 | Budget Control | Shadow Budget Lock | 자동 입찰 시 예산 초과 및 다중 낙찰 방지 |
+
+<br />
+
+## AI
+
+### 구현 완료 기술
+
+| Category | Stack | Description |
+| --- | --- | --- |
+| AI Integration | OpenAI Vision API | 상품 이미지 기반 브랜드, 모델명, 색상, 사이즈, 상태 정보 분석 |
+| Market Data | KREAM, eBay | 중고 신발 시세 데이터 수집 및 평균 거래가 계산 |
+| Price Logic | Price Calculation Engine | KREAM/eBay 평균가, 상품 상태, 구성품 여부를 반영한 추천 가격 계산 |
+| Data Processing | Java Service Logic | AI 분석 결과와 시세 데이터를 가격 계산용 정형 데이터로 변환 |
+| Validation | Backend Rule-based Validation | AI 분석 결과와 가격 산정 결과를 백엔드 규칙으로 검증 |
+
+### 구현 예정 기술
+
+| Category | Stack | Description |
+| --- | --- | --- |
+| Agent Logic | AI Agent | 판매자 가격 조정, 경매 전환, 구매자 상품 비교 및 입찰 판단 보조 |
 | AI Validation | Harness Layer | AI 분석 결과와 가격 산정 결과를 내부 시세 데이터로 검증 |
 | Framework | FastAPI | 가격 검증/AI 추론 API를 별도 서버로 분리할 경우 사용 |
 | Language | Python | 크롤링, 데이터 전처리, AI 실험 및 별도 추론 서버 구현 |
+| Crawling | Playwright, Requests, BeautifulSoup | 추가 시세 데이터 수집 및 데이터 소스 확장 |
 
 <br />
 
